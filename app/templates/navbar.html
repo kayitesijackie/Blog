@@ -1,19 +1,4 @@
-
-
-
-
-<!-- <ul class="nav navbar-nav navbar-right">
-    {% if current_user.is_authenticated %}
-    <li style="color:white;padding:15px;">{{current_user.username}}</li>
-    <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
-    {% else %}
-    <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
-    {%endif%}
-  </ul> -->
-
-
-
-  <div class="navbar navbar-light" role="navigation" style="margin-bottom:0; border-bottom: 1px solid;">
+<div class="navbar navbar-light" role="navigation" style="margin-bottom:0; border-bottom: 1px solid;">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -22,25 +7,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/" class="navbar-brand"> One Minute Pitch </a>
+            <a href="/" class="navbar-brand"> Blog App</a>
         </div>
         <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
-                    <li><a href="{{url_for('main.interview')}}">Interview</a></li>
-                    <li><a href="{{url_for('main.product')}}">Product</a></li>
-                    <li><a href="{{url_for('main.promotion')}}">Promotion</a></li>
-                    <li><a href="{{url_for('main.pickup')}}">Pickup lines</a></li>
+                    <li><a href="{{url_for('main.general')}}">General</a></li>
+                    <li><a href="{{url_for('main.happiness')}}">Happiness</a></li>
+                    <li><a href="{{url_for('main.motivation')}}">Motivation</a></li>
+                    <li><a href="{{url_for('main.success')}}">Success</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
-                    <li><a href="{{url_for('main.new_pitch')}}">New Pitch</a></li>
+                    <li><a href="{{url_for('main.new_blog')}}">New Blog</a></li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.username| capitalize}} <span class="caret"></span></a>
                       <ul class="dropdown-menu">
                         <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{url_for('main.user_pitches',uname=current_user.username)}}">My Pitches</a></li>
+                        <li><a href="{{url_for('main.user_blogs',uname=current_user.username)}}">My Blogs</a></li>
                     </ul>
                     </li>
                     <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
