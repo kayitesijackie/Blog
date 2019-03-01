@@ -1,27 +1,26 @@
-from app.models import Comment, User,Pitch
+from app.models import Comment, User,Blog
 from app import db
 import unittest
-
 class PitchTest(unittest.TestCase):
     def setUp(self):
-        self.new_user = User(username = 'Jane', password = 'banana', email = 'janedoe@demo.com')
-        self.new_pitch = Pitch(id = 123, pitch_title = 'Pitch', pitch_content = 'Pitch content',category = 'pickup',likes = 0, dislikes = 0)
+        self.new_user = User(username = 'James', password = 'banana', email = 'james12@gmail.com')
+        self.new_blog = Blog(id = 123, blog_title = 'Blog', blog_content = 'Blog content',category = 'general')
 
     def tearDown(self):
         User.query.delete()
-        Pitch.query.delete()
+        Blog.query.delete()
         Comment.query.delete()
 
     def test_check_instance(self):
-        self.assertEquals(self.new_pitch.pitch_title,'Pitch')
-        self.assertEquals(self.new_pitch.pitch_content,'Pitch content')
-        self.assertEquals(self.new_pitch.category,"pickup")
+        self.assertEquals(self.new_blog.blog_title,'Blog')
+        self.assertEquals(self.new_blog.blog_content,'Blog content')
+        self.assertEquals(self.new_blog.category,"success")
 
-    def test_save_pitch(self):
-        self.new_pitch.save_pitch()
-        self.assertTrue(len(Pitch.query.all()) > 0)
+    def test_save_blog(self):
+        self.new_blog.save_blog()
+        self.assertTrue(len(Blog.query.all()) > 0)
 
-    def test_get_pitch_by_id(self):
-        self.new_pitch.save_pitch()
-        pitch = Pitch.get_pitch(123)
-        self.assertTrue(pitch is not None)
+    def test_get_blog_by_id(self):
+        self.new_blog.save_blog()
+        pitch = Blog.get_blog(123)
+        self.assertTrue(blog is not None)
