@@ -2,10 +2,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField,TextAreaField,SubmitField,SelectField
 from wtforms.validators import Required
 
-class PitchForm(FlaskForm):
+class BlogForm(FlaskForm):
     title = StringField('Title', validators = [Required()])
-    text = TextAreaField('Pitch',validators = [Required()])
-    category = SelectField('Category', choices = [('pickup lines', 'Pickup lines'),('interview','Interview'), ('product','Product'),('promotion','Promotion')], validators = [Required()])
+    text = TextAreaField('Blog',validators = [Required()])
+    category = SelectField('Category', choices = [('general', 'General'),('happiness','Happiness'), ('motivation','Motivation'),('success','Success')], validators = [Required()])
     submit = SubmitField('Post')
 
 class UpdateProfile(FlaskForm):
@@ -13,5 +13,6 @@ class UpdateProfile(FlaskForm):
     submit = SubmitField('Submit')
 
 class CommentForm(FlaskForm):
+    name = StringField('Add your name', validators = [Required()])
     text = TextAreaField('Leave a Comment',validators = [Required()])
     submit = SubmitField('Add Comment')
