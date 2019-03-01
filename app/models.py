@@ -17,7 +17,7 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(1000))
     profile_pic_path = db.Column(db.String)
     password_secure = db.Column(db.String(255))
-    pitches = db.relationship('Pitch',backref = 'user', lazy = 'dynamic')
+    blogs = db.relationship('Blog',backref = 'user', lazy = 'dynamic')
     comments = db.relationship('Comment', backref = 'user', lazy = 'dynamic')
 
     @property
@@ -34,64 +34,69 @@ class User(UserMixin,db.Model):
     def __repr__(self):
         return f'User{self.username},{self.email}'
 
-class Pitch(db.Model):
-    __tablename__ = 'pitches'
+class Blog(db.Model):
+    __tablename__ = 'blogs'
     id = db.Column(db.Integer,primary_key = True)
-    pitch_title = db.Column(db.String)
-    pitch_content = db.Column(db.String(1000))
+    blog_title = db.Column(db.String)
+    blog_content = db.Column(db.String(1000))
     category = db.Column(db.String(), nullable = False)
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-    likes = db.Column(db.Integer)
-    dislikes = db.Column(db.Integer)
-    comments = db.relationship('Comment',backref =  'pitch_id',lazy = "dynamic")
+    comments = db.relationship('Comment',backref =  'blog_id',lazy = "dynamic")
 
 
-    def save_pitch(self):
+    def save_blog(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
-    def get_pitches(cls,category):
-        pitches = Pitch.query.filter_by(category = category).all()
-        return pitches
+    def get_blogs(cls,category):
+        blogs = Blog.query.filter_by(category = category).all()
+        return blogs
 
     @classmethod
-    def get_pitch(cls,id):
-        pitch = Pitch.query.filter_by(id = id).first()
+    def get_blog(cls,id):
+        blog = Blog.query.filter_by(id = id).first()
 
-        return pitch
+        return blog
 
     @classmethod
-    def count_pitches(cls,uname):
+    def count_blog(cls,uname):
         user = User.query.filter_by(username = uname).first()
-        pitches = Pitch.query.filter_by(user_id = user.id).all()
+        blogs = Blog.query.filter_by(user_id = user.id).all()
 
-        pitch_count = 0
-        for pitch in pitches:
-            pitch_count += 1
+        blog_count = 0
+        for blog in blogs:
+            blog_count += 1
 
-        return pitch_count
+        return blog_count
 
     def __repr__(self):
-        return f'Pitch {self.pitch_title}, {self.category}'
+        return f'Blog {self.blog_title},{self.category}'
 
 
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer,primary_key = True)
     comment = db.Column(db.String(1000))
+    name = db.Column(db.String)
+    blog = db.Column(db.Integer,db.ForeignKey("blogs.id"))
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-    pitch = db.Column(db.Integer,db.ForeignKey("pitches.id"))
 
     def save_comment(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
-    def get_comments(cls,pitch):
-        comments = Comment.query.filter_by(pitch_id = pitch).all()
+    def get_comments(cls,blog):
+        comments = Comment.query.filter_by(blog_id = blog).all()
         return comments
+
+    @classmethod
+    def delete_comment(cls,id):
+        comment = Comment.query.filter_by(id=id).first()
+        db.session.delete(comment)
+        db.session.commit()
 
     def __repr__(self):
         return f'Comment{self.comment}'
