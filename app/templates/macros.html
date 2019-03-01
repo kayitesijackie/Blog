@@ -1,10 +1,10 @@
-{% macro displayPitches(pitches_list)%}
-    {%for pitch in pitches_list%}
+{% macro displayBlogs(blogs_list)%}
+    {%for blog in blogs_list%}
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 review-card">
             <div class="well well-lg">
-                <h4>{{pitch.pitch_title}}</h4>
-                <p>{{pitch.pitch_content| truncate(100)}}</p>
-                <p>Written by:  {{pitch.user.username}} <a href="/pitch/{{pitch.id}}" class="btn btn-primary pull-right">Read</a> </p>
+                <h4>{{blog.blog_title}}</h4>
+                <p>{{blog.blog_content| truncate(100)}}</p>
+                <p>Written by:  {{blog.user.username}} <a href="/blog/{{blog.id}}" class="btn btn-primary pull-right">Read</a> </p>
             </div>
         </div>
     {%endfor%}
@@ -13,8 +13,9 @@
 {%macro displayComments(comments_list)%}
     {%for comment in comments_list%}
         <div class="col-md-12">
-            <h5>{{comment.user.username}}</h5>
+            <h5>{{comment.name}}</h5>
             <p>{{comment.comment}}</p>
+            <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#deleteCommentModal">Delete Comment</button>
         </div>
     {%endfor%}
 {%endmacro%}
