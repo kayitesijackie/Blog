@@ -18,7 +18,7 @@ def login():
 
         flash('Invalid username or password')
 
-    title = 'Pitch App Login'
+    title = 'Blog App Login'
     return render_template('auth/login.html', title = title, login_form = form)
 
 
