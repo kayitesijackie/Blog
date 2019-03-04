@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,TextAreaField,SubmitField,SelectField
-from wtforms.validators import Required
+from wtforms.validators import Required, Email, Length
 
 class BlogForm(FlaskForm):
     title = StringField('Title', validators = [Required()])
