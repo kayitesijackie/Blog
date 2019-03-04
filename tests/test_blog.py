@@ -12,6 +12,7 @@ class BlogTest(unittest.TestCase):
         Comment.query.delete()
 
     def test_check_instance(self):
+        self.assertEquals(self.new_blog.id,123)
         self.assertEquals(self.new_blog.blog_title,'Blog')
         self.assertEquals(self.new_blog.blog_content,'Blog content')
         self.assertEquals(self.new_blog.category,"success")
