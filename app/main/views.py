@@ -1,10 +1,12 @@
 from flask import render_template,request,redirect,url_for,abort
 from . import main
-from ..models import User,Blog,Comment
+from ..models import User,Blog,Comment, Subscriber
 from .. import db,photos
-from .forms import UpdateProfile,BlogForm,CommentForm
+from .forms import UpdateProfile,BlogForm,CommentForm, SubscriberForm
 from flask_login import login_required,current_user
 import datetime
+from ..email import mail_message
+
 
 
 @main.route('/')
@@ -90,18 +92,23 @@ def update_pic(uname):
 @main.route('/blog/new', methods = ['GET','POST'])
 @login_required
 def new_blog():
+    legend = 'New Blog'
     form = BlogForm()
     if form.validate_on_submit():
         title = form.title.data
         blog = form.text.data
         category = form.category.data
 
-        new_blog = Blog(blog_title = title,blog_content = blog, user = current_user)
+        new_blog = Blog(blog_title = title,blog_content = blog, category = category,  user = current_user)
         new_blog.save_blog()
+
+        subscriber = Subscriber.query.all()
+        for email in subscriber:
+            mail_message("New Blog Post! ","email/postnotification",email.email,subscriber=subscriber)
         return redirect(url_for('main.index'))
 
     title = 'New Blog'
-    return render_template('new_blog.html', title = title, blog_form = form)
+    return render_template('new_blog.html', title = title, blog_form = form, legend = legend)
 
 @main.route('/blog/<int:id>', methods = ["GET","POST"])
 def blog(id):
@@ -127,3 +134,63 @@ def user_blog(uname):
     blog_count = Blog.count_blogs(uname)
 
     return render_template('profile/blogs.html', user = user, blogs = blogs, blogs_count = blog_count)
+
+@main.route('/subscribe', methods=['GET','POST'])
+def subscriber():
+    subscriber_form=SubscriberForm()
+    blogs = Blog.query.order_by(Blog.posted.desc()).all()
+
+    if subscriber_form.validate_on_submit():
+        subscriber= Subscriber(email=subscriber_form.email.data,name = subscriber_form.name.data)
+
+        db.session.add(subscriber)
+        db.session.commit()
+
+        mail_message("Welcome to Blog web app","email/welcome_subscriber",subscriber.email,subscriber=subscriber)
+
+        title= "Blog app"
+        return render_template('index.html',title=title, blogs=blogs)
+
+    subscriber = Blog.query.all()
+
+    blogs = Blog.query.all()
+
+
+    return render_template('subscribe.html',subscriber=subscriber,subscriber_form=subscriber_form,blog=blog)
+
+
+@main.route('/blog/<int:id>/update', methods = ['GET','POST'])
+@login_required
+def update_blog(id):
+    legend = 'Update Blog'
+    blog = Blog.get_blog(id)
+    form = BlogForm()
+    if form.validate_on_submit():
+        blog.blog_title = form.title.data
+        blog.blog_content = form.text.data
+        blog.category = form.category.data
+        db.session.commit()
+        return redirect(url_for('main.blog', id = id))
+    elif request.method == 'GET':
+        form.title.data = blog.blog_title
+        form.text.data = blog.blog_content
+    form.category.data = blog.category
+    return render_template('new_blog.html', legend = legend, blog_form = form, id=id)
+
+@main.route('/blog/delete/<int:id>', methods = ['GET', 'POST'])
+@login_required
+def delete_blog(id):
+    blog = Blog.get_blog(id)
+    db.session.delete(blog)
+    db.session.commit()
+
+    return render_template('blogs.html', id=id, blog = blog)
+
+@main.route('/blog/comment/delete/<int:id>', methods = ['GET', 'POST'])
+@login_required
+def delete_comment(id):
+    comment = Comment.query.filter_by(id=id).first()
+    blog_id = comment.blog
+    Comment.delete_comment(id)
+
+    return redirect(url_for('main.blog',id=blog_id))
