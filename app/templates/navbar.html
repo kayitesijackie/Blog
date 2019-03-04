@@ -11,27 +11,26 @@
         </div>
         <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="{{url_for('main.general')}}">General</a></li>
-                    <li><a href="{{url_for('main.happiness')}}">Happiness</a></li>
-                    <li><a href="{{url_for('main.motivation')}}">Motivation</a></li>
-                    <li><a href="{{url_for('main.success')}}">Success</a></li>
+                    <li><a href="/"><strong style="color:blue">Home</strong></a></li>
+                    <li><a href="{{url_for('main.general')}}"><strong style="color:blue">General</strong></a></li>
+                    <li><a href="{{url_for('main.happiness')}}"><strong style="color:blue">Happiness</strong></a></li>
+                    <li><a href="{{url_for('main.motivation')}}"><strong style="color:blue">Motivation</strong></a></li>
+                    <li><a href="{{url_for('main.success')}}"><strong style="color:blue">Success</strong></a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
-                    <li><a href="{{url_for('main.new_blog')}}">New Blog</a></li>
+                    <li><a href="{{url_for('main.new_blog')}}"><strong style="color: blue">New Blog</strong></a></li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{current_user.username| capitalize}} <span class="caret"></span></a>
                       <ul class="dropdown-menu">
                         <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{{url_for('main.user_blogs',uname=current_user.username)}}">My Blogs</a></li>
-                    </ul>
-                    </li>
+                
                     <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
                     {% else %}
-                    <li><a  href="{{url_for('auth.login')}}">Login</a></li>
-                    <li><a href="{{url_for('main.subscriber')}}">Subscribe to the mailing list</a></li>
+                    <li><a  href="{{url_for('auth.login')}}"><strong style="color:blue">Login</strong></a></li>
+                    <li><a href="{{url_for('main.subscriber')}}"><strong style="color:blue">Subscribe to the mailing list</strong></a></li>
                   </ul>
                   {% endif %}
                 </div>

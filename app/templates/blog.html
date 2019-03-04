@@ -11,7 +11,7 @@
         <h4>{{blog.blog_title}}</h4>
         <p>{{blog.blog_content}}</p>
         <small>Posted on {{date}} by {{blog.user.username}}</small>
-      {% if blog.user.email == 'admin@blog.com' %}
+      {% if current_user.is_authenticated %}
       <div class="row">
         <div class="col-md-6">
           <a href="{{url_for('main.update_blog',id=blog.id)}}" style="border:1px solid #fca3b7;color:#000;" onmouseover="this.style.backgroundColor='#fca3b7'" onmouseout="this.style.backgroundColor='#fff'" class="btn btn-sm">Update Blog</a>

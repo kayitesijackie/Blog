@@ -15,7 +15,7 @@ class BlogTest(unittest.TestCase):
         self.assertEquals(self.new_blog.id,123)
         self.assertEquals(self.new_blog.blog_title,'Blog')
         self.assertEquals(self.new_blog.blog_content,'Blog content')
-        self.assertEquals(self.new_blog.category,"success")
+        self.assertEquals(self.new_blog.category,"general")
 
     def test_save_blog(self):
         self.new_blog.save_blog()
@@ -23,5 +23,5 @@ class BlogTest(unittest.TestCase):
 
     def test_get_blog_by_id(self):
         self.new_blog.save_blog()
-        pitch = Blog.get_blog(123)
+        blog = Blog.get_blog(123)
         self.assertTrue(blog is not None)

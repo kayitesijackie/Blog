@@ -1,4 +1,4 @@
-Hello {{user.username}}
+Hello {{subscriber.name}}
 Welcome to Blog Website
 You have now signed up for the application and can now start sharing your blogs to everyone.
 Good luck.
